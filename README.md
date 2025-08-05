@@ -20,7 +20,7 @@ We dump output to `<folder>output_1cell</folder>`
 
 Run `make` and `project` and then:
 ```
-~/git/motility_1cell$ python plot_xy.py 
+~/git/motility_1cell$ python plot_xy.py output_1cell 11
 ---- for dir=  output_1cell/
 t=0.0: x,y= 0.0,0.0
 t=0.1: x,y= 0.15000000000000002,0.0
@@ -36,7 +36,7 @@ t=1.0: x,y= 1.05,0.0
 ```
 However, if we add `(*all_cells)[0]->set_previous_velocity(1,0,0);` to `setup_tissue()`, we get the expected outcome:
 ```
-~/git/motility_1cell$ python plot_xy.py 
+~/git/motility_1cell$ python plot_xy.py output_1cell 11
 ---- for dir=  output_1cell/
 t=0.0: x,y= 0.0,0.0
 t=0.1: x,y= 0.10000000000000002,0.0
