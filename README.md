@@ -18,7 +18,7 @@ and `config/PhysiCell_settings.xml` has:
 
 We dump output to `<folder>output_1cell</folder>`
 
-Run `project` and then:
+Run `make` and `project` and then:
 ```
 ~/git/motility_1cell$ python plot_xy.py 
 ---- for dir=  output_1cell/
