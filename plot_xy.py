@@ -3,8 +3,9 @@ from pyMCDS import pyMCDS
 
 # dir='output_1sec/'
 dir='output_1cell/'
+print("---- for dir= ",dir)
 
-for idx in range(5):
+for idx in range(11):
     fname = f'output{idx:08d}.xml'
     mcds = pyMCDS(fname, dir, microenv=False, graph=False, verbose=False)
     xvals = mcds.data['discrete_cells']['data']['position_x']
