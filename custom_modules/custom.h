@@ -90,3 +90,4 @@ void custom_function( Cell* pCell, Phenotype& phenotype , double dt );
 
 void contact_function( Cell* pMe, Phenotype& phenoMe , Cell* pOther, Phenotype& phenoOther , double dt ); 
 
+void custom_update_cell_velocity( Cell* pCell, Phenotype& phenotype, double dt);
