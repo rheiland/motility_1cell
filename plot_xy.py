@@ -1,11 +1,18 @@
 import numpy as np
 from pyMCDS import pyMCDS
+import sys
+
+dir = sys.argv[1]
+num_frames = int(sys.argv[2])
+print("num_frames=",num_frames)
 
 # dir='output_1sec/'
-dir='output_1cell/'
+# dir='output_1cell/'
 print("---- for dir= ",dir)
 
-for idx in range(11):
+for idx in range(num_frames):
+# for idx in range(11):
+# for idx in range(3):
     fname = f'output{idx:08d}.xml'
     mcds = pyMCDS(fname, dir, microenv=False, graph=False, verbose=False)
     xvals = mcds.data['discrete_cells']['data']['position_x']
