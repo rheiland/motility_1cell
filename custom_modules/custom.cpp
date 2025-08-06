@@ -200,7 +200,8 @@ void setup_tissue( void )
 	
 	// load cells from your CSV file (if enabled)
 	load_cells_from_pugixml();
-    (*all_cells)[0]->set_previous_velocity(1,0,0);  //rwh
+    // (*all_cells)[0]->set_previous_velocity(1,0,0);  //rwh
+    (*all_cells)[0]->set_previous_velocity(0.1,0,0);  //rwh
 	set_parameters_from_distributions();
 	
 	return; 

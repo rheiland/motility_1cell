@@ -77,6 +77,11 @@ all: main.cpp $(ALL_OBJECTS)
 	$(COMPILE_COMMAND) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp 
 	make name
 
+multirun: main_multiruns.cpp $(ALL_OBJECTS)
+	$(COMPILE_COMMAND) -o multirun $(ALL_OBJECTS) main_multiruns.cpp 
+	echo ""
+	echo "multirun"
+
 static: main.cpp $(ALL_OBJECTS) $(MaBoSS)
 	$(LINK_COMMAND) $(INC) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp $(LIB) -static-libgcc -static-libstdc++ $(STATIC_OPENMP)
 
