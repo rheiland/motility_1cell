@@ -14,7 +14,7 @@
     </domain>
 
     <overall>
-        <max_time units="min">1</max_time>
+        <max_time units="min">10000.0</max_time>
         <time_units>min</time_units>
         <space_units>micron</space_units>
         <dt_diffusion units="min">0.01</dt_diffusion>
@@ -49,7 +49,7 @@
 
     <options>
         <legacy_random_points_on_sphere_in_divide>false</legacy_random_points_on_sphere_in_divide>
-        <virtual_wall_at_domain_edge>true</virtual_wall_at_domain_edge>
+        <virtual_wall_at_domain_edge>false</virtual_wall_at_domain_edge>
         <disable_automated_spring_adhesions>false</disable_automated_spring_adhesions>
         <random_seed>42</random_seed>
     </options>
@@ -153,9 +153,9 @@
                     <maximum_number_of_attachments>12</maximum_number_of_attachments>
                 </mechanics>
                 <motility>
-                    <speed units="micron/min">1</speed>
+                    <speed units="micron/min">0.1</speed>
                     <persistence_time units="min">0</persistence_time>
-                    <migration_bias units="dimensionless">1</migration_bias>
+                    <migration_bias units="dimensionless">0.5</migration_bias>
                     <options>
                         <enabled>true</enabled>
                         <use_2D>true</use_2D>
