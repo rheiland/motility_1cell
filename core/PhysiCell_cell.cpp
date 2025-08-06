@@ -262,6 +262,7 @@ void Cell::update_motility_vector( double dt_ )
 		phenotype.motility.motility_vector.assign( 3, 0.0 ); 
 		return; 
 	}
+    // std::cout << "---- update_motility_vector():  dt=" << dt_ << ", motility_vector=" << phenotype.motility.motility_vector << std::endl;
 	
 	if( UniformRandom() < dt_ / phenotype.motility.persistence_time || phenotype.motility.persistence_time < dt_ )
 	{
@@ -291,6 +292,7 @@ void Cell::update_motility_vector( double dt_ )
 		{ randvec = UniformOnUnitCircle(); }
 		else
 		{ randvec = UniformOnUnitSphere(); }
+        // std::cout << "    randvec= " << randvec << std::endl;
 
 		// if the update_bias_vector function is set, use it  
 		if( functions.update_migration_bias )
@@ -299,18 +301,81 @@ void Cell::update_motility_vector( double dt_ )
 		}
 		
 		phenotype.motility.motility_vector = phenotype.motility.migration_bias_direction; // motiltiy = bias_vector
+        // std::cout << "   motility_vector(2)= " << phenotype.motility.motility_vector << std::endl;
+
 		phenotype.motility.motility_vector *= phenotype.motility.migration_bias; // motility = bias*bias_vector 
+        // std::cout << "   motility_vector(3)= " << phenotype.motility.motility_vector << std::endl;
 		
 		double one_minus_bias = 1.0 - phenotype.motility.migration_bias; 
 		
 		axpy( &(phenotype.motility.motility_vector), one_minus_bias, randvec ); // motility = (1-bias)*randvec + bias*bias_vector
+        // std::cout << "   motility_vector(4)= " << phenotype.motility.motility_vector << std::endl;
 		
 		normalize( &(phenotype.motility.motility_vector) ); 
+        // std::cout << "   motility_vector(5,norm'd)= " << phenotype.motility.motility_vector << std::endl;
 		
 		phenotype.motility.motility_vector *= phenotype.motility.migration_speed; 
+        // std::cout << "   motility_vector(6,*speed)= " << phenotype.motility.motility_vector << std::endl;
 	}	
 	return; 
 } 
+// original
+// void Cell::update_motility_vector( double dt_ )
+// {
+// 	if( phenotype.motility.is_motile == false )
+// 	{
+// 		phenotype.motility.motility_vector.assign( 3, 0.0 ); 
+// 		return; 
+// 	}
+	
+// 	if( UniformRandom() < dt_ / phenotype.motility.persistence_time || phenotype.motility.persistence_time < dt_ )
+// 	{
+// 		/*
+// 		// choose a uniformly random unit vector 
+// 		double temp_angle = 6.28318530717959*UniformRandom();
+// 		double temp_phi = 3.1415926535897932384626433832795*UniformRandom();
+		
+// 		double sin_phi = sin(temp_phi);
+// 		double cos_phi = cos(temp_phi);
+		
+// 		if( phenotype.motility.restrict_to_2D == true )
+// 		{ 
+// 			sin_phi = 1.0; 
+// 			cos_phi = 0.0;
+// 		}
+		
+// 		std::vector<double> randvec; 
+// 		randvec.resize(3,sin_phi); 
+		
+// 		randvec[0] *= cos( temp_angle ); // cos(theta)*sin(phi)
+// 		randvec[1] *= sin( temp_angle ); // sin(theta)*sin(phi)
+// 		randvec[2] = cos_phi; //  cos(phi)
+// 		*/
+// 		std::vector<double> randvec(3,0.0);
+// 		if( phenotype.motility.restrict_to_2D == true )
+// 		{ randvec = UniformOnUnitCircle(); }
+// 		else
+// 		{ randvec = UniformOnUnitSphere(); }
+
+// 		// if the update_bias_vector function is set, use it  
+// 		if( functions.update_migration_bias )
+// 		{
+// 			functions.update_migration_bias( this,phenotype,dt_ ); 
+// 		}
+		
+// 		phenotype.motility.motility_vector = phenotype.motility.migration_bias_direction; // motiltiy = bias_vector
+// 		phenotype.motility.motility_vector *= phenotype.motility.migration_bias; // motility = bias*bias_vector 
+		
+// 		double one_minus_bias = 1.0 - phenotype.motility.migration_bias; 
+		
+// 		axpy( &(phenotype.motility.motility_vector), one_minus_bias, randvec ); // motility = (1-bias)*randvec + bias*bias_vector
+		
+// 		normalize( &(phenotype.motility.motility_vector) ); 
+		
+// 		phenotype.motility.motility_vector *= phenotype.motility.migration_speed; 
+// 	}	
+// 	return; 
+// } 
 
 void Cell::advance_bundled_phenotype_functions( double dt_ )
 {
@@ -867,16 +932,20 @@ void Cell::update_position( double dt )
 	if( default_microenvironment_options.simulate_2D == true )
 	{ velocity[2] = 0.0; }
 	
-	std::vector<double> old_position(position); 
+	// std::vector<double> old_position(position);   // rwh - do a PR to comment out this!
+    // std::cout << "---update_position(): pre-update position:  d1= "<<d1<< ", d2=" << d2 << std::endl;
+    // std::cout << "    velocity:  "<<velocity<< std::endl;
+    // std::cout << "    previous_velocity:  "<<previous_velocity<< std::endl;
 	axpy( &position , d1 , velocity );  
 	axpy( &position , d2 , previous_velocity );  
+    // std::cout << "    t= "<<PhysiCell_globals.current_time << ", position=" << position[0]<<", " <<position[1]<< std::endl;
 	// overwrite previous_velocity for future use 
 	// if(sqrt(dist(old_position, position))>3* phenotype.geometry.radius)
 		// std::cout<<sqrt(dist(old_position, position))<<"old_position: "<<old_position<<", new position: "<< position<<", velocity: "<<velocity<<", previous_velocity: "<< previous_velocity<<std::endl;
 	
 	previous_velocity = velocity; 
 	
-	velocity[0]=0; velocity[1]=0; velocity[2]=0;
+	velocity[0]=0; velocity[1]=0; velocity[2]=0;   // rwh - try to comment out
 	if(get_container()->underlying_mesh.is_position_valid(position[0],position[1],position[2]))
 	{
 		updated_current_mechanics_voxel_index=get_container()->underlying_mesh.nearest_voxel_index( position );
