@@ -122,6 +122,7 @@ void update_motility_vector( double dt_ )
 {
     std::vector<double> randvec(3,0.0);
     static double migration_bias = 0.5;
+    // static double migration_bias = 1.0;
     static double migration_speed = 0.1;
     static double persistence_time = 0.0;
 
@@ -256,27 +257,32 @@ int main()
     printf("time,id,com_1,com_2\n");
 
     int id_run = 0;
-    for (int run_num=0; run_num<1; run_num++)
+    for (int run_num=0; run_num<100; run_num++)
     // for (int id_run=100; id_run<=1000; id_run+=100)   
     {
         // time,id,com_1,com_2,area,surface
         // 100,0,56.3445,50.1373,222.34,52.86
         // 200,0,62.7075,50.2596,222.34,52.86
 
-        // for (int idx=0; idx<100; idx++)   // (100 / dt_mech) = 1000
-        std::cout <<"0,"<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
-        for (int idx=1; idx<=100000; idx++)   // (100 / dt_mech) = 1000
-        {
-            // not sure where, but somewhere in an actual sim, this is called 2 more times
-            // if (idx==0)
-            // {
-            //     std::cout << " >>> extra UniformRandom calls\n";
-            //     UniformRandom();
-            //     UniformRandom();
-            //     UniformRandom();
-            //     UniformRandom();
-            // }
+        // reset
+        position[0] = 50.0;
+        position[1] = 50.0;
 
+        // not sure where, but somewhere in an actual sim, this is called 2 more times
+        // if (idx==0)
+        {
+            // std::cout << " >>> extra UniformRandom calls\n";
+            UniformRandom();
+            UniformRandom();
+            UniformRandom();
+            UniformRandom();
+        }
+
+        // for (int idx=0; idx<100; idx++)   // (100 / dt_mech) = 1000
+        // std::cout <<"0,"<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
+        // for (int idx=1; idx<=10; idx++)   // equiv of 1 sec: (1/ 0.1) = 10
+        for (int idx=1; idx<=100000; idx++)   // equiv max_time=10000 (in 0.1 dt_mech steps)
+        {
             update_motility_vector( dt_mech );
             // velocity += motility_vector;
             velocity[0] += motility_vector[0];
@@ -284,10 +290,10 @@ int main()
             // std::cout <<"motility vector= "<<cell_xpos[idx]<<","<<cell_ypos[idx]<<std::endl;
             update_position( dt_mech );
             // std::cout <<idx<<") cell pos= "<<position[0]<<","<<position[1]<<std::endl;
-            if ((idx % 100) == 0)
+            if ((idx % 1000) == 0)  // equiv of <interval units="min">100</interval>
             {
                 // printf("%d,%d,%.4f,%.4f\n", id_run, run_num, position[0],position[1]);
-                std::cout <<idx<<","<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
+                std::cout <<idx/10<<","<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
             }
         }
         // printf("The number is %d and Pi is %.2f\n", num, pi);
