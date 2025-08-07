@@ -265,7 +265,7 @@ int main()
 
         // for (int idx=0; idx<100; idx++)   // (100 / dt_mech) = 1000
         std::cout <<"0,"<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
-        for (int idx=1; idx<=100000; idx++)   // (100 / dt_mech) = 1000
+        for (int idx=1; idx<=10000; idx++)   // (100 / dt_mech) = 1000
         {
             // not sure where, but somewhere in an actual sim, this is called 2 more times
             // if (idx==0)

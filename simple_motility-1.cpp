@@ -139,7 +139,7 @@ void update_motility_vector( double dt_ )
     {
             // if( phenotype.motility.restrict_to_2D == true )
             { randvec = UniformOnUnitCircle(); 
-            //   std::cout << "randvec= " << randvec[0] << ", " << randvec[1] << std::endl; 
+              std::cout << "randvec= " << randvec[0] << ", " << randvec[1] << std::endl; 
             }
             // else
             // { randvec = UniformOnUnitSphere(); }
@@ -157,20 +157,20 @@ void update_motility_vector( double dt_ )
             // phenotype.motility.motility_vector = phenotype.motility.migration_bias_direction; // motility = bias_vector
             motility_vector = {1.,0.,0.};
 
-            // std::cout << "motility_vector(2)= "<< motility_vector[0] << ", " << motility_vector[1] <<", "<< motility_vector[2]<< std::endl;
+            std::cout << "motility_vector(2)= "<< motility_vector[0] << ", " << motility_vector[1] <<", "<< motility_vector[2]<< std::endl;
 
             // std::vector<double> motility_vector {1.0, 0.0, 0.0};   // rwh: do we really reset?
             // phenotype.motility.motility_vector *= phenotype.motility.migration_bias; // motility = bias*bias_vector
             // motility_vector *= migration_bias; // motility = bias*bias_vector
             motility_vector[0] *= migration_bias; // motility = bias*bias_vector
             motility_vector[1] *= migration_bias; // motility = bias*bias_vector
-            // std::cout << "motility_vector (3)= "<< motility_vector[0] << ", " << motility_vector[1] << std::endl;
+            std::cout << "motility_vector (3)= "<< motility_vector[0] << ", " << motility_vector[1] << std::endl;
             // double one_minus_bias = 1.0 - phenotype.motility.migration_bias;
             double one_minus_bias = 1.0 - migration_bias;
-            // std::cout << "one_minus_bias = "<< one_minus_bias << std::endl;
+            std::cout << "one_minus_bias = "<< one_minus_bias << std::endl;
             // axpy( &(phenotype.motility.motility_vector), one_minus_bias, randvec ); // motility = (1-bias)*randvec + bias*bias_vector
             axpy( &(motility_vector), one_minus_bias, randvec ); // motility = (1-bias)*randvec + bias*bias_vector
-            // std::cout << "motility_vector (4)= "<< motility_vector[0] << ", " << motility_vector[1] << std::endl;
+            std::cout << "motility_vector (4)= "<< motility_vector[0] << ", " << motility_vector[1] << std::endl;
             // for (size_t i = 0; i < motility_vector.size(); ++i) 
             // {
             //     randvec[i] += one_minus_bias * motility_vector[i];
@@ -182,7 +182,7 @@ void update_motility_vector( double dt_ )
             // motility_vector *= migration_speed;
             motility_vector[0] *= migration_speed;
             motility_vector[1] *= migration_speed;
-            // std::cout << "motility_vector (5)= "<< motility_vector[0] << ", " << motility_vector[1] << std::endl;
+            std::cout << "motility_vector (5)= "<< motility_vector[0] << ", " << motility_vector[1] << std::endl;
 
             // cell_xpos.push_back(motility_vector[0]);
             // cell_ypos.push_back(motility_vector[1]);
@@ -264,8 +264,7 @@ int main()
         // 200,0,62.7075,50.2596,222.34,52.86
 
         // for (int idx=0; idx<100; idx++)   // (100 / dt_mech) = 1000
-        std::cout <<"0,"<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
-        for (int idx=1; idx<=100000; idx++)   // (100 / dt_mech) = 1000
+        for (int idx=0; idx<5; idx++)   // (100 / dt_mech) = 1000
         {
             // not sure where, but somewhere in an actual sim, this is called 2 more times
             // if (idx==0)
@@ -283,15 +282,10 @@ int main()
             velocity[1] += motility_vector[1];
             // std::cout <<"motility vector= "<<cell_xpos[idx]<<","<<cell_ypos[idx]<<std::endl;
             update_position( dt_mech );
-            // std::cout <<idx<<") cell pos= "<<position[0]<<","<<position[1]<<std::endl;
-            if ((idx % 100) == 0)
-            {
-                // printf("%d,%d,%.4f,%.4f\n", id_run, run_num, position[0],position[1]);
-                std::cout <<idx<<","<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
-            }
+            std::cout <<idx<<") cell pos= "<<position[0]<<","<<position[1]<<std::endl;
         }
         // printf("The number is %d and Pi is %.2f\n", num, pi);
-        // printf("%d,%d,%.4f,%.4f\n", id_run, run_num, position[0],position[1]);
+        printf("%d,%d,%.4f,%.4f\n", id_run, run_num, position[0],position[1]);
     }
 
     // std::cout <<"\n-------------"<<std::endl;
