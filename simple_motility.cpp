@@ -17,7 +17,10 @@ std::vector<unsigned int> physicell_random_seeds;
 // std::vector<double> cell_xpos; 
 // std::vector<double> cell_ypos; 
 
-double dt_mech = 0.1;
+// double dt_mech = 0.1;
+double max_time = 10000;   // mins
+// double dt_mech = 0.5;    // default is 0.1
+double dt_mech = 1.0;    // default is 0.1
 std::vector<double> motility_vector {1.0, 0.0, 0.0};
 std::vector<double> position = {50.,50.,0.};
 std::vector<double> velocity = {0.1,0.,0.};
@@ -252,9 +255,16 @@ int main()
     omp_set_num_threads(1);
     // std::cout <<"cell pos= "<<position[0]<<","<<position[1]<<std::endl;
 
-    // std::cout<<"time,id,com_1,com_2,area,surface\n";
+    std::cout<<"time,id,com_1,com_2,area,surface\n";
     // std::cout<<"time,id,com_1,com_2\n";
-    printf("time,id,com_1,com_2\n");
+    // printf("time,id,com_1,com_2\n");
+
+    int max_steps = int(max_time / dt_mech);
+    printf("dt_mech = %f\n",dt_mech);
+    printf("max_time = %f\n",max_time);
+    printf("max_steps = %d\n",max_steps);
+    int idx_output = int(100/dt_mech);
+    printf("idx_output = %d\n",idx_output);
 
     int id_run = 0;
     for (int run_num=0; run_num<100; run_num++)
@@ -268,7 +278,9 @@ int main()
         position[0] = 50.0;
         position[1] = 50.0;
 
-        // not sure where, but somewhere in an actual sim, this is called 2 more times
+        // Not sure where, but somewhere in the full PhysiCell sim, this is called N times
+        // before we get into the actual motility. Inserting these additional UniformRandom
+        // call would get us bitwise reprod (assuming same seed and 1 core).
         // if (idx==0)
         {
             // std::cout << " >>> extra UniformRandom calls\n";
@@ -281,7 +293,7 @@ int main()
         // for (int idx=0; idx<100; idx++)   // (100 / dt_mech) = 1000
         // std::cout <<"0,"<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
         // for (int idx=1; idx<=10; idx++)   // equiv of 1 sec: (1/ 0.1) = 10
-        for (int idx=1; idx<=100000; idx++)   // equiv max_time=10000 (in 0.1 dt_mech steps)
+        for (int idx=1; idx<=max_steps; idx++)   // max_steps = f(dt_mech, max_time)
         {
             update_motility_vector( dt_mech );
             // velocity += motility_vector;
@@ -290,10 +302,13 @@ int main()
             // std::cout <<"motility vector= "<<cell_xpos[idx]<<","<<cell_ypos[idx]<<std::endl;
             update_position( dt_mech );
             // std::cout <<idx<<") cell pos= "<<position[0]<<","<<position[1]<<std::endl;
-            if ((idx % 1000) == 0)  // equiv of <interval units="min">100</interval>
+            // if ((idx % 1000) == 0)  // equiv of <interval units="min">100</interval>
+            if ((idx % idx_output) == 0)  // equiv of <interval units="min">100</interval>
             {
                 // printf("%d,%d,%.4f,%.4f\n", id_run, run_num, position[0],position[1]);
-                std::cout <<idx/10<<","<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
+                // std::cout <<idx/10<<","<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
+                // std::cout <<idx<<","<< run_num<<","<< position[0]<<","<<position[1] << std::endl;
+                std::cout <<idx<<","<< run_num<<","<< position[0]<<","<<position[1] << ",222.34,52.86" <<std::endl;
             }
         }
         // printf("The number is %d and Pi is %.2f\n", num, pi);
