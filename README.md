@@ -1,4 +1,14 @@
-# Unit test of motility
+# Unit test of PhysiCell motility - for the "Persistent Cell" OpenVT reference model
+
+This is a stripped-down, standalone program for cell motility in PhysiCell
+
+```
+g++-14 simple_motility.cpp -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 -o simple_motility
+simple_motility >simple.csv
+vi simple.csv   # delete debug print lines, leaving just the header and data
+python plot_simple.py
+```
+
 
 In `create_cell_types()` of `custom.cpp`, we have:
 ```
